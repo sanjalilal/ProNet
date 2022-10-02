@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
-import { Input } from 'react-daisyui'
 
 export default function InputBox() {
     // Checkbox
     const centralityAlgo = ['DC','BC','CC','EC','IC'] 
 
     const handleChange = (e) => {
-        const checked = e.target.checked;
-        const checkedName = e.target.id;
-        console.log(checked + " " + checkedName);
+        const checkedID = e.target.id;
+        console.log(checkedID);
     }
 
     // Textbox
@@ -37,26 +35,40 @@ export default function InputBox() {
         } 
         return allNodes;
     }
+
+    const showFile = async (e) => {
+        e.preventDefault()
+        const reader = new FileReader()
+        reader.onload = async (e) => { 
+          const text = (e.target.result)
+          console.log(text)
+          alert(text)
+        };
+        reader.readAsText(e.target.files[0])
+      }
+
     return (
         <>
         {/* input box */}
         <div className="flex w-full component-preview p-4 items-center justify-center gap-2 font-sans">
-            <div class="form-control w-full max-w-xs">
-                <label class="label">
-                    <span class="label-text">JobID</span>
+            <div className="form-control w-full max-w-xs">
+                <label className="label">
+                    <span className="label-text">JobID</span>
                 </label>
-                <input type="text" placeholder="please input your jobID" class="input input-accent w-full max-w-xs"/>
+                <input type="text" placeholder="please input your jobID" className="input input-accent w-full max-w-xs"/>
             </div>
         </div>
 
          {/* checkbox */}
         <div className="flex w-full component-preview p-4 items-center justify-center gap-2 font-sans">        
-            <div class="form-control">
+            <div className="form-control flex flex-row">
                 {centralityAlgo.map((item)=>(
-                    <label class="label cursor-pointer">
-                    <input type="checkbox" class="checkbox checkbox-xs" id={item} onChange={handleChange}/>
-                    <span class="label-text">{item}</span> 
+                    <div className="flex flex-row"> 
+                    <label className="label cursor-pointer">
+                    <input type="checkbox" className="checkbox checkbox-xs" id={item} onChange={handleChange}/>
+                    <span className="label-text">{item}</span> 
                     </label>
+                    </div>
                 ))}   
             </div>
         </div>
@@ -76,14 +88,14 @@ export default function InputBox() {
             <label className="label">
                 <span className="label-text"><strong>OR</strong> Upload your own file</span>
             </label>
-            <input type="file"/>
+            <input type="file" onChange={(e) => showFile(e)} />
             <button className="btn btn-sm" onClick={handleSubmit}>Submit</button>    
         </div>
         </div>
 
         {/* Notice */}
         <div className="px-20">
-        <div class="bg-yellow-100 rounded-lg py-5 px-6 mb-4 text-base text-yellow-700" role="alert">
+        <div className="bg-yellow-100 rounded-lg py-5 px-6 mb-4 text-base text-yellow-700" role="alert">
             <span>
                 NOTICE: Enter or upload a list of identifiers which is a tab-delimited string for each row, for example:
                 <div className="pl-10">
